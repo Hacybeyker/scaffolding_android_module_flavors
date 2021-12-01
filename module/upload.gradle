@@ -11,12 +11,27 @@ def versionApp = version
 afterEvaluate {
     publishing {
         publications {
-            module(MavenPublication) {
+            google(MavenPublication) {
                 groupId = ConfigureApp.groupId
                 artifactId = ConfigureApp.artifactId
                 version = versionApp
                 artifacts {
-                    artifact("$buildDir/outputs/aar/${ConfigureApp.artifactId}-release.aar")
+                    artifact("$buildDir/outputs/aar/module-google-release.aar")
+                    version = versionApp
+                    groupId = ConfigureApp.groupId
+                    artifactId = "google"
+                }
+            }
+
+            huawei(MavenPublication) {
+                groupId = ConfigureApp.groupId
+                artifactId = ConfigureApp.artifactId
+                version = versionApp
+                artifacts {
+                    artifact("$buildDir/outputs/aar/module-huawei-release.aar")
+                    version = versionApp
+                    groupId = ConfigureApp.groupId
+                    artifactId = "huawei"
                 }
             }
         }

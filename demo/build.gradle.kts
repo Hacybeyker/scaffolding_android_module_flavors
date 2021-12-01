@@ -42,6 +42,19 @@ android {
     lint {
         isCheckDependencies = true
     }
+
+    flavorDimensions.add("app")
+    productFlavors {
+        create("google") {
+            dimension = "app"
+            applicationId = "com.hacybeyker.module.demo"
+        }
+        create("huawei") {
+            dimension = "app"
+            applicationId = "com.hacybeyker.module.demo"
+            apply(plugin = "com.huawei.agconnect")
+        }
+    }
 }
 
 dependencies {

@@ -144,8 +144,14 @@ jobs:
       - name: Make Gradle Executable
         run: chmod +x ./gradlew
 
-      - name: Run AssembleRelease
-        run: ./gradlew module:assembleRelease
+      - name: Run AssembleRelease Google
+        run: ./gradlew module:assembleGoogleRelease
 
-      - name: Run Upload Artifact
-        run: ./gradlew module:publishModulePublicationToArtifactRepository
+      - name: Run Upload Artifact Google
+        run: ./gradlew module:publishGooglePublicationToArtifactRepository
+
+      - name: Run AssembleRelease Huawei
+        run: ./gradlew module:assembleHuaweiRelease
+
+      - name: Run Upload Artifact Huawei
+        run: ./gradlew module:publishHuaweiPublicationToArtifactRepository

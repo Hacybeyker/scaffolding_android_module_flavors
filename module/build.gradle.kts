@@ -30,6 +30,11 @@ android {
                 "proguard-rules.pro"
             )
             buildConfigField("String", "EXAMPLE_FIELD", "\"example-release\"")
+            resValue(
+                "string",
+                "google_maps_key",
+                project.findProperty("GOOGLE_MAPS_API_KEY_RELEASE").toString() ?: ""
+            )
         }
 
         getByName("debug") {
@@ -39,6 +44,11 @@ android {
                 "proguard-rules.pro"
             )
             buildConfigField("String", "EXAMPLE_FIELD", "\"example-debug\"")
+            resValue(
+                "string",
+                "google_maps_key",
+                project.findProperty("GOOGLE_MAPS_API_KEY_DEBUG").toString() ?: ""
+            )
         }
     }
 
@@ -54,6 +64,16 @@ android {
     lint {
         isCheckDependencies = true
     }
+
+    flavorDimensions.add("app")
+    productFlavors {
+        create("google") {
+            dimension = "app"
+        }
+        create("huawei") {
+            dimension = "app"
+        }
+    }
 }
 
 dependencies {
@@ -67,4 +87,8 @@ dependencies {
     testImplementation(TestDependencies.junit)
     androidTestImplementation(TestDependencies.extJUnit)
     androidTestImplementation(TestDependencies.espressoCore)
+
+    // TODO Only for example
+    "huaweiImplementation"(MainApplicationDependencies.hmsMaps)
+    "googleImplementation"(MainApplicationDependencies.gmsMaps)
 }
