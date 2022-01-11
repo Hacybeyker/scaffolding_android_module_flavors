@@ -22,14 +22,38 @@ jobs:
       - name: Make Gradle Executable
         run: chmod +x ./gradlew
 
-      - name: Run Lint
-        run: ./gradlew module:lintDebug
+      - name: Run LintGoogle
+        run: ./gradlew module:lintGoogleDebug
 
-      - name: Upload Lint Test Report
+      - name: Upload LintGoogle Test Report
         uses: actions/upload-artifact@v2
         with:
-          name: lint_report
-          path: module/build/reports/lint-results-debug.html
+          name: lint_google_report
+          path: module/build/reports/lint-results-googleDebug.html
+
+      - name: Run LintHuawei
+        run: ./gradlew module:lintHuaweiDebug
+
+      - name: Upload lintHuawei Test Report
+        uses: actions/upload-artifact@v2
+        with:
+          name: lint_huawei_report
+          path: module/build/reports/lint-results-huaweiDebug.html
+
+      - name: Run KtLintFormat
+        run: ./gradlew module:ktlintFormat
+
+      - name: Run KtLintCheck
+        run: ./gradlew module:ktlintCheck
+
+      - name: Run Detekt
+        run: ./gradlew module:detekt
+
+      - name: Upload Detekt Report
+        uses: actions/upload-artifact@v2
+        with:
+          name: detekt_report
+          path: module/build/reports/detek
 
   unit-test:
     name: Unit Test
@@ -48,14 +72,23 @@ jobs:
       - name: Make Gradle Executable
         run: chmod +x ./gradlew
 
-      - name: Run Tests
-        run: ./gradlew module:testDebugUnitTest
+      - name: Run TestGoogle
+        run: ./gradlew module:testGoogleDebugUnitTest
 
-      - name: Upload Test Report
+      - name: Upload TestGoogle Report
         uses: actions/upload-artifact@v2
         with:
-          name: unit_test_report
-          path: module/build/reports/tests/testDebugUnitTest/
+          name: unit_test_google_report
+          path: module/build/reports/tests/testGoogleDebugUnitTest/
+
+      - name: Run TestHuawei
+        run: ./gradlew module:testHuaweiDebugUnitTest
+
+      - name: Upload TestHuawei Report
+        uses: actions/upload-artifact@v2
+        with:
+          name: unit_test_huawei_report
+          path: module/build/reports/tests/testHuaweiDebugUnitTest/
 
   jacoco:
     name: Coverage Test
@@ -74,17 +107,29 @@ jobs:
       - name: Make Gradle Executable
         run: chmod +x ./gradlew
 
-      - name: Run Jacoco Test Report
-        run: ./gradlew module:jacocoTestReport
+      - name: Run JacocoGoogle Test Report
+        run: ./gradlew module:jacocoGoogleTestReport
 
-      - name: Upload coverage test report
+      - name: Upload CoverageGoogle Test Report
         uses: actions/upload-artifact@v2
         with:
-          name: jacoco_test_report
-          path: module/build/reports/jacoco/jacocoTestReport/
+          name: jacoco_google_test_report
+          path: module/build/reports/jacoco/jacocoGoogleTestReport/
 
-      - name: Run Jacoco Test Coverage Verification
-        run: ./gradlew module:jacocoTestCoverageVerification
+      - name: Run JacocoGoogle Test Coverage Verification
+        run: ./gradlew module:jacocoGoogleTestCoverageVerification
+
+      - name: Run JacocoHuawei Test Report
+        run: ./gradlew module:jacocoHuaweiTestReport
+
+      - name: Upload CoverageHuawei Test Report
+        uses: actions/upload-artifact@v2
+        with:
+          name: jacoco_huawei_test_report
+          path: module/build/reports/jacoco/jacocoHuaweiTestReport/
+
+      - name: Run JacocoHuawei Test Coverage Verification
+        run: ./gradlew module:jacocoHuaweiTestCoverageVerification
 
   sonarqube:
     name: Analysis Code
@@ -108,14 +153,32 @@ jobs:
       - name: Make Gradle Executable
         run: chmod +x ./gradlew
 
-      - name: Run Lint
-        run: ./gradlew module:lintDebug
+      - name: Run LintGoogle
+        run: ./gradlew module:lintGoogleDebug
 
-      - name: Run Tests
-        run: ./gradlew module:testDebugUnitTest
+      - name: Run LintHuawei
+        run: ./gradlew module:lintHuaweiDebug
 
-      - name: Run Jacoco Test Report
-        run: ./gradlew module:jacocoTestReport
+      - name: Run KtLintFormat
+        run: ./gradlew module:ktlintFormat
+
+      - name: Run KtLintCheck
+        run: ./gradlew module:ktlintCheck
+
+      - name: Run Detekt
+        run: ./gradlew module:detekt
+
+      - name: Run TestGoogle
+        run: ./gradlew module:testGoogleDebugUnitTest
+
+      - name: Run TestHuawei
+        run: ./gradlew module:testHuaweiDebugUnitTest
+
+      - name: Run JacocoGoogle Test Report
+        run: ./gradlew module:jacocoGoogleTestReport
+
+      - name: Run JacocoHuawei Test Report
+        run: ./gradlew module:jacocoHuaweiTestReport
 
       - name: Run SonarQube Scan
         run: ./gradlew module:sonarqube -Dsonar.host.url=https://sonarcloud.io/ -Dsonar.login=${{ secrets.SONARCLOUDTOKEN }}
@@ -144,14 +207,14 @@ jobs:
       - name: Make Gradle Executable
         run: chmod +x ./gradlew
 
-      - name: Run AssembleRelease Google
+      - name: Run AssembleGoogleRelease
         run: ./gradlew module:assembleGoogleRelease
 
-      - name: Run Upload Artifact Google
+      - name: Run Upload Google Artifact
         run: ./gradlew module:publishGooglePublicationToArtifactRepository
 
-      - name: Run AssembleRelease Huawei
+      - name: Run AssembleHuaweiRelease
         run: ./gradlew module:assembleHuaweiRelease
 
-      - name: Run Upload Artifact Huawei
+      - name: Run Upload Huawei Artifact
         run: ./gradlew module:publishHuaweiPublicationToArtifactRepository

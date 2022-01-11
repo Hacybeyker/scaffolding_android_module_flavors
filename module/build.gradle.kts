@@ -3,6 +3,8 @@ plugins {
     id("kotlin-android")
     id("kotlin-kapt")
     id("kotlin-parcelize")
+    id("org.jlleitschuh.gradle.ktlint") version "10.2.0"
+    id("io.gitlab.arturbosch.detekt") version "1.18.1"
 }
 
 apply {
@@ -20,6 +22,7 @@ android {
         targetSdk = VersionApp.targetSdkVersion
         testInstrumentationRunner = VersionApp.testInstrumentationRunner
         consumerProguardFiles("consumer-rules.pro")
+        renderscriptSupportModeEnabled = true
     }
 
     buildTypes {
@@ -59,7 +62,9 @@ android {
 
     kotlinOptions.jvmTarget = JavaVersion.VERSION_11.toString()
 
-    buildFeatures { viewBinding = true }
+    buildFeatures {
+        viewBinding = true
+    }
 
     lint {
         isCheckDependencies = true
@@ -74,6 +79,29 @@ android {
             dimension = "app"
         }
     }
+
+    tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+
+    detekt {
+        buildUponDefaultConfig = true
+        allRules = true
+        config = files("$projectDir/config/detekt.yml")
+        reports {
+            html.enabled = true
+            xml.enabled = true
+            txt.enabled = false
+            sarif.enabled = false
+        }
+    }
+
+    lint {
+        disable("TypographyFractions", "TypographyQuotes")
+        isCheckDependencies = true
+        isAbortOnError = false
+        isIgnoreWarnings = false
+    }
 }
 
 dependencies {
@@ -87,7 +115,8 @@ dependencies {
     testImplementation(TestDependencies.junit)
     androidTestImplementation(TestDependencies.extJUnit)
     androidTestImplementation(TestDependencies.espressoCore)
-
+    // Detekt
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.18.0")
     // TODO Only for example
     "huaweiImplementation"(MainApplicationDependencies.hmsMaps)
     "googleImplementation"(MainApplicationDependencies.gmsMaps)

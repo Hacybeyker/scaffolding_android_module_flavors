@@ -27,35 +27,80 @@ jobs:
       - name: Make Gradle Executable
         run: chmod +x ./gradlew
 
-      - name: Run Lint
-        run: ./gradlew module:lintDebug
+      - name: Run LintGoogle
+        run: ./gradlew module:lintGoogleDebug
 
-      - name: Upload Lint Test Report
+      - name: Upload LintGoogle Test Report
         uses: actions/upload-artifact@v2
         with:
-          name: lint_report
-          path: module/build/reports/lint-results-debug.html
+          name: lint_google_report
+          path: module/build/reports/lint-results-googleDebug.html
 
-      - name: Run Tests
-        run: ./gradlew module:testDebugUnitTest
+      - name: Run LintHuawei
+        run: ./gradlew module:lintHuaweiDebug
 
-      - name: Upload Test Report
+      - name: Upload lintHuawei Test Report
         uses: actions/upload-artifact@v2
         with:
-          name: unit_test_report
-          path: module/build/reports/tests/testDebugUnitTest/
+          name: lint_huawei_report
+          path: module/build/reports/lint-results-huaweiDebug.html
 
-      - name: Run Jacoco Test Report
-        run: ./gradlew module:jacocoTestReport
+      - name: Run KtLintFormat
+        run: ./gradlew module:ktlintFormat
 
-      - name: Upload Coverage Test Report
+      - name: Run KtLintCheck
+        run: ./gradlew module:ktlintCheck
+
+      - name: Run Detekt
+        run: ./gradlew module:detekt
+
+      - name: Upload Detekt Report
         uses: actions/upload-artifact@v2
         with:
-          name: jacoco_test_report
-          path: module/build/reports/jacoco/jacocoTestReport/
+          name: detekt_report
+          path: module/build/reports/detek
 
-      - name: Run Jacoco Test Coverage Verification
-        run: ./gradlew module:jacocoTestCoverageVerification
+      - name: Run TestGoogle
+        run: ./gradlew module:testGoogleDebugUnitTest
+
+      - name: Upload TestGoogle Report
+        uses: actions/upload-artifact@v2
+        with:
+          name: unit_test_google_report
+          path: module/build/reports/tests/testGoogleDebugUnitTest/
+
+      - name: Run TestHuawei
+        run: ./gradlew module:testHuaweiDebugUnitTest
+
+      - name: Upload TestHuawei Report
+        uses: actions/upload-artifact@v2
+        with:
+          name: unit_test_huawei_report
+          path: module/build/reports/tests/testHuaweiDebugUnitTest/
+
+      - name: Run JacocoGoogle Test Report
+        run: ./gradlew module:jacocoGoogleTestReport
+
+      - name: Upload CoverageGoogle Test Report
+        uses: actions/upload-artifact@v2
+        with:
+          name: jacoco_google_test_report
+          path: module/build/reports/jacoco/jacocoGoogleTestReport/
+
+      - name: Run JacocoGoogle Test Coverage Verification
+        run: ./gradlew module:jacocoGoogleTestCoverageVerification
+
+      - name: Run JacocoHuawei Test Report
+        run: ./gradlew module:jacocoHuaweiTestReport
+
+      - name: Upload CoverageHuawei Test Report
+        uses: actions/upload-artifact@v2
+        with:
+          name: jacoco_huawei_test_report
+          path: module/build/reports/jacoco/jacocoHuaweiTestReport/
+
+      - name: Run JacocoHuawei Test Coverage Verification
+        run: ./gradlew module:jacocoHuaweiTestCoverageVerification
 
       - name: Run SonarQube Scan
         run: ./gradlew module:sonarqube -Dsonar.host.url=https://sonarcloud.io/ -Dsonar.login=${{ secrets.SONARCLOUDTOKEN }}
